@@ -1,0 +1,54 @@
+http:
+  port: 8080
+
+admin:
+  port: 9876
+  host: localhost
+
+apiEndpoints:
+  public:
+    host: "*"
+    paths: "/public"
+  protected:
+    host: "*"
+    paths: "/protected"
+
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+  - jwt
+  - custom-jwt-check
+  - custom-logger
+
+pipelines:
+  default:
+    apiEndpoints:
+      - public
+    policies:
+      - custom-logger:
+          - action: {}
+      - proxy:
+          - action:
+              serviceEndpoint: express-app
+  protected:
+    apiEndpoints:
+      - protected
+    policies:
+      - custom-logger:
+          - action: {}
+      - custom-jwt-check:
+          - action:
+              jwtSecret: "jwt_secret"
+      - proxy:
+          - action:
+              serviceEndpoint: express-app
+
+serviceEndpoints:
+  express-app:
+    url: "http://localhost:3000"

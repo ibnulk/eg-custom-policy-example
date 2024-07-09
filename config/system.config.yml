@@ -1,0 +1,28 @@
+# Core
+db:
+  redis:
+    emulate: true
+    namespace: EG
+
+plugins:
+  custom-jwt-check:
+    package: "./plugins/custom-jwt-check/manifest.js"
+  custom-logger:
+    package: "./plugins/custom-logger/manifest.js"
+
+crypto:
+  cipherKey: sensitiveKey
+  algorithm: aes256
+  saltRounds: 10
+
+# OAuth2 Settings
+session:
+  secret: keyboard cat
+  resave: false
+  saveUninitialized: false
+accessTokens:
+  timeToExpiry: 7200000
+refreshTokens:
+  timeToExpiry: 7200000
+authorizationCodes:
+  timeToExpiry: 300000
